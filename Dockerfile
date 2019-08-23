@@ -91,5 +91,5 @@ RUN python3 -m pip install ipympl
 RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager \
     && jupyter labextension install jupyter-matplotlib
 
-RUN mkdir pra
-WORKDIR pra
+RUN mkdir base_repository
+WORKDIR base_repository
