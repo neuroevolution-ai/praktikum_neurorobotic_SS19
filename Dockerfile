@@ -93,5 +93,3 @@ RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager \
 
 RUN mkdir pra
 WORKDIR pra
-
-ADD neuro_robotic.ipynb neuro_robotic_readonly.ipynb
