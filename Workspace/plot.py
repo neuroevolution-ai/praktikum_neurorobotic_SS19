@@ -41,3 +41,4 @@ plt.plot(age, voltage_left2)
 
 plt.grid()
 plt.show()
+
