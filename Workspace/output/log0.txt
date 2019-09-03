@@ -1,0 +1,17 @@
+[INFO] [2019.9.3 11:18:22 /home/jovyan/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:238 @ Network::create_rngs_] : Creating default RNGs
+[INFO] [2019.9.3 11:18:22 /home/jovyan/nest-simulator-2.16.0/nestkernel/rng_manager.cpp:284 @ Network::create_grng_] : Creating new default global RNG
+
+              -- N E S T --
+  Copyright (C) 2004 The NEST Initiative
+
+ Version: v2.16.0
+ Built: Aug 15 2019 09:36:37
+
+ This program is provided AS IS and comes with
+ NO WARRANTY. See the file LICENSE for details.
+
+ Problems or suggestions?
+   Visit http://www.nest-simulator.org
+
+ Type 'nest.help()' to find out more about NEST.
+
