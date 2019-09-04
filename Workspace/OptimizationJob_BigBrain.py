@@ -6,7 +6,7 @@ import optparse
 
 class brain_big(object):
     
-    def __init__(self, WEIGHT_RED_TO_ACTOR, WEIGHT_RED_TO_GO_ON, WEIGHT_GREEN_BLUE_TO_ACTOR, WEIGHT_GO_ON_TO_RIGHT_ACTOR):  
+    def __init__(self, weight_red_to_actor, weight_red_to_go_on, weight_green_blue_to_actor, weight_go_on_to_right_actor, weight_eval_red, weight_eval_to_red_sensor, weight_eval_to_bg_sensor, weight_red_to_blue_eval):  
         sim = brain_sim
 
         INPUT_PARAMS = {'a': 4.0,
@@ -77,28 +77,14 @@ class brain_big(object):
 
         SYNAPSE_PARAMS = {"delay": 0.1 }
 
-        # Synaptic weights
-        weight_red_to_actor = 1.5e-2  # was 1.5e-4
-        weight_red_to_go_on = 1000  # or -1.2e-3?
-        weight_green_blue_to_actor = 1.0
-        weight_go_on_to_right_actor = 1.4e-4  # was 1.4e-4
-        weight_eval_red = 2.5e-2
-        weight_eval_to_red_sensor = 8.75e-5  # was 1.0e-4, then 8.75e-5
-        weight_eval_to_bg_sensor = 5.0  # was 1.5, then 10.0, change it further
-        weight_red_to_blue_eval = 1000  # was 5e-8
-
         synapse_red_to_actor = sim.StaticSynapse(weight=weight_red_to_actor, **SYNAPSE_PARAMS)
-        synapse_red_to_go_on = sim.StaticSynapse(weight=weight_red_to_go_on,**SYNAPSE_PARAMS)
-        synapse_green_blue_to_actor = sim.StaticSynapse(weight=weight_green_blue_to_actor,                                                        **SYNAPSE_PARAMS)
-        synapse_go_on_to_right_actor = sim.StaticSynapse(weight=weight_go_on_to_right_actor,
-                                                                **SYNAPSE_PARAMS)
+        synapse_red_to_go_on = sim.StaticSynapse(weight=weight_red_to_go_on, **SYNAPSE_PARAMS)
+        synapse_green_blue_to_actor = sim.StaticSynapse(weight=weight_green_blue_to_actor, **SYNAPSE_PARAMS)
+        synapse_go_on_to_right_actor = sim.StaticSynapse(weight=weight_go_on_to_right_actor, **SYNAPSE_PARAMS)
         synapse_eval_red = sim.StaticSynapse(weight=weight_eval_red, **SYNAPSE_PARAMS)
-        synapse_eval_to_red_sensor = sim.StaticSynapse(weight=weight_eval_to_red_sensor,
-                                                                **SYNAPSE_PARAMS)
-        synapse_eval_to_bg_sensor = sim.StaticSynapse(weight=weight_eval_to_bg_sensor,
-                                                                **SYNAPSE_PARAMS)
-        synapse_red_to_blue_eval = sim.StaticSynapse(weight=weight_red_to_blue_eval,
-                                                                **SYNAPSE_PARAMS)
+        synapse_eval_to_red_sensor = sim.StaticSynapse(weight=weight_eval_to_red_sensor, **SYNAPSE_PARAMS)
+        synapse_eval_to_bg_sensor = sim.StaticSynapse(weight=weight_eval_to_bg_sensor, **SYNAPSE_PARAMS)
+        synapse_red_to_blue_eval = sim.StaticSynapse(weight=weight_red_to_blue_eval, **SYNAPSE_PARAMS)
 
         # Connect neurons
         circuit = self.population
@@ -259,13 +245,17 @@ def step(*ratio):
 # Read weights from args
 parser = optparse.OptionParser()
 options, args = parser.parse_args()
-WEIGHT_RED_TO_ACTOR = float(args[0])
-WEIGHT_RED_TO_GO_ON = float(args[1])
-WEIGHT_GREEN_BLUE_TO_ACTOR = float(args[2])
-WEIGHT_GO_ON_TO_RIGHT_ACTOR = float(args[3])
+weight_red_to_actor = float(args[0])
+weight_red_to_go_on = float(args[1])
+weight_green_blue_to_actor = float(args[2])
+weight_go_on_to_right_actor = float(args[3])
+weight_eval_red = float(args[4])
+weight_eval_to_red_sensor = float(args[5])
+weight_eval_to_bg_sensor = float(args[6])
+weight_red_to_blue_eval = float(args[7])
 
 brain_sim.setup(timestep=0.1,min_delay=0.1,max_delay=4.0)
-b = brain_big(WEIGHT_RED_TO_ACTOR, WEIGHT_RED_TO_GO_ON, WEIGHT_GREEN_BLUE_TO_ACTOR, WEIGHT_GO_ON_TO_RIGHT_ACTOR)
+b = brain_big(weight_red_to_actor, weight_red_to_go_on, weight_green_blue_to_actor, weight_go_on_to_right_actor, weight_eval_red, weight_eval_to_red_sensor, weight_eval_to_bg_sensor, weight_red_to_blue_eval)
 spike_generator = SpikeGenerator(b.sensor_red_left, b.sensor_red_right, b.sensor_green_blue)
 output_generator = OutputGenerator(b.actor_left, b.actor_right)
 
@@ -301,5 +291,5 @@ for row in logging_information:
 
 error = voltage_left_error + voltage_right_error
 
-print([WEIGHT_RED_TO_ACTOR, WEIGHT_RED_TO_GO_ON, WEIGHT_GREEN_BLUE_TO_ACTOR, WEIGHT_GO_ON_TO_RIGHT_ACTOR])
+print([weight_red_to_actor, weight_red_to_go_on, weight_green_blue_to_actor, weight_go_on_to_right_actor, weight_eval_red, weight_eval_to_red_sensor, weight_eval_to_bg_sensor, weight_red_to_blue_eval])
 print("fitness = " + str(error) )
