@@ -13,3 +13,4 @@ docker run --rm -it -p 8888:8888 -v $(pwd):/home/jovyan/base_repository jupyter-
 Man kann sich das Notebook auch im github anschauen. [link](https://github.com/spikingevolution/praktikum_neurorobotic_SS19/blob/master/neuro_robotic.ipynb). 
 Es sei darauf hingewiesen, dass github nach jedem push ein paar Minuten braucht, bis das notebook im web richtig dargestellt wird.
 
+ 
