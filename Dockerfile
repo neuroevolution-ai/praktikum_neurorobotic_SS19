@@ -1,5 +1,5 @@
 FROM jupyter/scipy-notebook
-ENV cache_breaker 2019_07_27
+ENV cache_breaker 2019_11_22
 USER root
 
 RUN apt-get update && apt-get dist-upgrade -y
@@ -77,6 +77,47 @@ RUN chown -R $NB_UID /home/jovyan
 USER $NB_UID
 RUN cd bullet3 && python3 -m pip install .
 
+#######################################
+### roboschool and ANN-requirements
+#######################################
+
+# this is the environment that was used to create the example ANN.
+# until we have full conversion of the environment (physic simulation and brain simulation basically) we install the full environment into this container as well. After we have full conversion we can ditch those dependencies again.
+# These dependencies are copied from here: https://github.com/spikingevolution/evolution-strategies/blob/master/Dockerfile
+
+# Update the system and install base and roboschool requirements
+USER root
+RUN  apt-get install -y git xvfb ffmpeg libgl1-mesa-dev libharfbuzz0b libpcre3-dev libqt5x11extras5
+USER $NB_USER
+
+RUN conda install --quiet --yes \
+    'gast==0.2.2' \
+    'matplotlib' \
+    'pandas' \
+    'ipywidgets'
+
+
+RUN conda clean --yes --all -f && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
+
+RUN pip install --quiet \
+    tensorflow==1.14.0 \
+    numpy==1.16.4 \
+    gym \
+    roboschool==1.0.48
+
+########################
+### SNN Toolbox
+########################
+
+# USER root
+RUN git clone https://github.com/NeuromorphicProcessorProject/snn_toolbox.git
+# USER $NB_USER
+
+RUN cd snn_toolbox && pip install --user .
+
 
 ##################
 ### final stuff
@@ -93,3 +134,11 @@ RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager \
 
 RUN mkdir base_repository
 WORKDIR base_repository
+
+
+
+# xvfb-run allows rendering in roboschool
+
+CMD ["xvfb-run", "-s", "-screen 0 1400x900x24", "start-notebook.sh", "--NotebookApp.token=''"]
+
+#CMD ["start-notebook.sh", "--NotebookApp.token=''"]
