@@ -1,0 +1,37 @@
+{
+    "config": {
+        "env_id": "RoboschoolAnt-v1",
+        "population_size": 10,
+        "timesteps_per_gen": 10000,
+        "num_workers": 4,
+        "learning_rate": 0.001,
+        "noise_stdev": 0.02,
+        "snapshot_freq": 1,
+        "return_proc_mode": "centered_rank",
+        "calc_obstat_prob": 0.01,
+        "l2coeff": 0.005,
+        "eval_prob": 0.003
+    },
+    "model_structure": {
+        "ac_noise_std": 0.01,
+        "ac_bins": 5,
+        "hidden_dims": [
+            256,
+            256
+        ],
+        "nonlin_type": "tanh",
+        "optimizer": "adam",
+        "optimizer_args": {
+            "stepsize": 0.001
+        }
+    },
+    "optimizations": {
+        "mirrored_sampling": true,
+        "fitness_shaping": true,
+        "weight_decay": true,
+        "discretize_actions": false,
+        "gradient_optimizer": true,
+        "observation_normalization": true,
+        "divide_by_stdev": false
+    }
+}
