@@ -113,10 +113,10 @@ RUN pip install --quiet \
 ########################
 
 # USER root
-RUN git clone https://github.com/bjuergens/snn_toolbox.git
+RUN git clone --branch custom_obj https://github.com/bjuergens/snn_toolbox.git
 # USER $NB_USER
 
-RUN cd snn_toolbox && pip install --user .
+RUN cd snn_toolbox && pip install --user -e .
 
 
 ##################
